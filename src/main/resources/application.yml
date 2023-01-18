@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/hemah_dev?createDatabaseIfNotExist=true
+    username: hemah_app
+    password: test55@good
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: 'true'
+        ddl-auto: create-drop
+    show-sql: true
+    generate-ddl: true
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
+
+firebase:
+  database-url: https://hemah-dev.firebaseio.com.test.test.not.real
+  service-account-file: src/main/resources/certs/hemmah-90e40-firebase-adminsdk-tjcyc-f131f0f599.json
+
+
+server:
+  error:
+    include-message: always
+
+logging:
+  level:
+    org:
+      help:
+        hemah: debug
+
+
+
