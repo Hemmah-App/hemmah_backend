@@ -3,6 +3,8 @@ package org.help.hemah.controller;
 import org.help.hemah.model.SecurityUser;
 import org.help.hemah.repository.UserRepository;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,7 @@ public class IndexController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String index(Authentication authentication) {
         String lastName = userRepository.findByUsername(authentication.getName()).get().getBaseUserDataEntity().getLastName();
         messagingTemplate.convertAndSend("/all", "Hello, " + lastName);

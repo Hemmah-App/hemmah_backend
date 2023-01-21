@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .userDetailsService(appUserDetailsService)
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/signin")
                 .and()
                 .headers(headers -> headers.frameOptions().sameOrigin())
                 .build();
