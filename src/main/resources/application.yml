@@ -25,12 +25,12 @@ firebase:
 server:
   error:
     include-message: always
+    path: /error
+#    whitelabel:
+#      enabled: false
 
 logging:
   level:
     org:
       help:
         hemah: debug
-
-
-
