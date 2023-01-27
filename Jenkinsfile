@@ -13,5 +13,24 @@ pipeline {
       }
     }
 
+    stage('Docker Login') {
+      environment {
+        DOCKER_USER = 'abdullahsayed'
+        DOCKER_PASSWORD = 'html123CSS'
+      }
+      steps {
+        sh 'sudo docker login -u $DOCKER_USER -p $DOCKER_PASSWORD'
+      }
+    }
+
+    stage('Build And Push') {
+      steps {
+        sh 'sudo docker build -t abdullahsayed/hemmah_backend:latest . --push'
+      }
+    }
+
+  }
+  environment {
+    USER = 'jenkins'
   }
 }
