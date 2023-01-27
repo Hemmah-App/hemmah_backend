@@ -1,12 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('Show files') {
-      steps {
-        sh 'ls -la'
-      }
-    }
-
     stage('Checkout Code') {
       steps {
         git(url: 'https://github.com/Hemmah-App/hemmah_backend.git', branch: 'master')
@@ -25,7 +19,7 @@ pipeline {
 
     stage('Build And Push') {
       steps {
-        sh 'sudo docker build -t abdullahsayed/hemmah_backend:latest . --push'
+        sh 'sudo docker build -t abdullahsayed/hemmah_backend:latest . && sudo docker push abdullahsayed/hemmah_backend:latest'
       }
     }
 
