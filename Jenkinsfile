@@ -25,7 +25,7 @@ pipeline {
 
     stage('Build And Push') {
       steps {
-        sh 'sudo docker build abdullahsayed/hemmah_backend:latest . --push'
+        sh 'sudo docker build -t abdullahsayed/hemmah_backend:latest . --push'
       }
     }
 
