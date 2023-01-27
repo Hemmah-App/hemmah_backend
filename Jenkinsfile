@@ -25,7 +25,7 @@ pipeline {
 
     stage('Build And Push') {
       steps {
-        sh 'sudo docker buildx build --platform linux/arm64,linux/amd64 abdullahsayed/hemmah_backend:latest . --push'
+        sh 'sudo docker build abdullahsayed/hemmah_backend:latest . --push'
       }
     }
 
