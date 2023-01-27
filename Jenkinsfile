@@ -23,6 +23,12 @@ pipeline {
       }
     }
 
+    stage('') {
+      steps {
+        sh 'mvn clean && mvn install'
+      }
+    }
+
   }
   environment {
     USER = 'jenkins'
