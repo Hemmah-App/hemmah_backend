@@ -13,5 +13,15 @@ pipeline {
       }
     }
 
+    stage('Docker Login') {
+      environment {
+        DOCKER_USER = 'abdullahsayed'
+        DOCKER_PASSWORD = 'html123CSS'
+      }
+      steps {
+        sh 'docker login -u $DOCKER_USER -p $DOCKER_PASSWORD'
+      }
+    }
+
   }
 }
