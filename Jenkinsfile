@@ -25,17 +25,18 @@ pipeline {
       }
     }
 
-    stage('Docker - Build And Push') {
+    stage('Docker - Compose Down & Up') {
       steps {
-        sh 'sudo docker build -t abdullahsayed/hemmah_backend:latest . && sudo docker push abdullahsayed/hemmah_backend:latest'
+        sh 'sudo docker-compose down && sudo docker-compose up -d --build'
       }
     }
 
-//     stage('Docker - Run New Container') {
-//         steps {
-//             sh 'docker run -p 8080:5151 '
-//         }
+//     stage('Docker - Build And Push') {
+//       steps {
+//         sh 'sudo docker build -t abdullahsayed/hemmah_backend:latest . && sudo docker push abdullahsayed/hemmah_backend:latest'
+//       }
 //     }
+
 
   }
   environment {
