@@ -1,8 +1,6 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/hemah_dev?createDatabaseIfNotExist=true
-    username: hemah_app
-    password: test55@good
+  profiles:
+    active: dev
 
   jpa:
     properties:
@@ -18,9 +16,7 @@ rsa:
   public-key: classpath:certs/public.pem
 
 firebase:
-  database-url: https://hemah-dev.firebaseio.com.test.test.not.real
-  service-account-file: src/main/resources/certs/hemmah-90e40-firebase-adminsdk-tjcyc-f131f0f599.json
-
+  service-account-file: ./src/main/resources/certs/hemmah_firebase_creds.json
 
 server:
   error:
@@ -28,9 +24,3 @@ server:
     path: /error
 #    whitelabel:
 #      enabled: false
-
-logging:
-  level:
-    org:
-      help:
-        hemah: debug
