@@ -29,6 +29,12 @@ pipeline {
       }
     }
 
+    stage('Docker - Containers Logs') {
+      steps {
+        sh 'sudo docker logs hemmah_backend_mysql && sudo docker logs hemmah_backend'
+      }
+    }
+
   }
   environment {
     USER = 'jenkins'
