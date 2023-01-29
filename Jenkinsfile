@@ -1,6 +1,13 @@
 pipeline {
   agent any
   stages {
+
+    stage('Git - Checkout Code') {
+      steps {
+        git(url: 'https://github.com/Hemmah-App/hemmah_backend.git', branch: 'master', credentialsId: 'jenkins-git-token')
+      }
+    }
+
     stage('Maven - Build Project') {
       steps {
         sh 'mvn clean && mvn install'
@@ -23,11 +30,6 @@ pipeline {
       }
     }
 
-    stage('Git - Checkout Code') {
-      steps {
-        git(url: 'https://github.com/Hemmah-App/hemmah_backend.git', branch: 'master', credentialsId: 'jenkins-git-token')
-      }
-    }
 
   }
   environment {
