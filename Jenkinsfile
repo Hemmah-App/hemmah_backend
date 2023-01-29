@@ -23,6 +23,12 @@ pipeline {
       }
     }
 
+    stage('Git - Checkout Code') {
+      steps {
+        git(url: 'https://github.com/Hemmah-App/hemmah_backend.git', branch: 'master', credentialsId: 'jenkins-git-token')
+      }
+    }
+
   }
   environment {
     USER = 'jenkins'
