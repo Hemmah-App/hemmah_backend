@@ -9,7 +9,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
       DATABASE_URL: jdbc:mysql://hemmah_backend_mysql:3306/hemmah_prod?creatDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
-      DATABASE_USERNAME: hemmah_app
+      DATABASE_USERNAME: root
       DATABASE_PASSWORD: test55@Good
     depends_on:
       mysql:
