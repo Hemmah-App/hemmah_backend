@@ -18,8 +18,6 @@ services:
   mysql:
     container_name: hemmah_backend_mysql
     image: mysql:8
-    command:
-      - GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'test55@Good' WITH GRANT OPTION;
     ports:
       - "3003:3306"
     volumes:
