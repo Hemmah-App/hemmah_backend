@@ -9,8 +9,6 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
       DATABASE_URL: jdbc:mysql://hemmah_backend_mysql:3306/hemmah_prod
-    volumes:
-      - /home/ubuntu/hemmah_backend/spring-docker-volume:/
     depends_on:
       mysql:
         condition: service_healthy
