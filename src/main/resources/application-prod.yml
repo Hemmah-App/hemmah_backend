@@ -1,5 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://hemmah_backend_mysql:3306/hemmah_prod?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: root
-    password: test55@Good
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
