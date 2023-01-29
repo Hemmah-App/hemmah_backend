@@ -1,18 +1,16 @@
 version: "3.9"
 services:
 
-  web:
+  spring:
     container_name: hemmah_backend
     build: .
     ports:
       - "5151:8080"
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://hemmah_backend_mysql:3306/hemmah_prod
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: test55@Good
+      DATABASE_URL: jdbc:mysql://hemmah_backend_mysql:3306/hemmah_prod
     volumes:
-      - /home/ubuntu/hemmah_backend/volume:.
+      - /home/ubuntu/hemmah_backend/spring-docker-volume:.
     depends_on:
       mysql:
         condition: service_healthy
@@ -23,7 +21,7 @@ services:
     ports:
       - "3003:3306"
     volumes:
-      - /home/ubuntu/hemmah_backend/mysql:/var/lib/mysql
+      - /home/ubuntu/hemmah_backend/mysql-docker-volume:/var/lib/mysql
     environment:
       MYSQL_DATABASE: hemmah_prod
       MYSQL_USER: hemmah_app
