@@ -1,7 +1,6 @@
 pipeline {
   agent any
   stages {
-
     stage('Git - Checkout Code') {
       steps {
         git(url: 'https://github.com/Hemmah-App/hemmah_backend.git', branch: 'master', credentialsId: 'jenkins-git-token')
@@ -26,10 +25,9 @@ pipeline {
 
     stage('Docker - Compose Down & Up') {
       steps {
-        sh 'sudo docker-compose down && sudo docker-compose up --build'
+        sh 'sudo docker-compose down && sudo docker-compose up -d --build'
       }
     }
-
 
   }
   environment {
