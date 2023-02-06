@@ -3,10 +3,9 @@ package org.help.hemah.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.help.hemah.model.Disabled;
-import org.help.hemah.service.TokenService;
-import org.help.hemah.service.disabled.DisabledService;
+import org.help.hemah.model.Volunteer;
 import org.help.hemah.service.help_video.HelpVideoService;
-import org.springframework.messaging.Message;
+import org.help.hemah.service.token.TokenService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -20,8 +19,6 @@ import org.springframework.stereotype.Controller;
 public class HelpVideoController {
 
     private final TokenService tokenService;
-
-    private final DisabledService disabledService;
     private final HelpVideoService helpVideoService;
 
     private final SimpMessagingTemplate template;
@@ -41,8 +38,8 @@ public class HelpVideoController {
     }
 
     @MessageMapping("/help_call/accept")
-    public void volAcceptedCall(final String roomUrl) {
-        helpVideoService.acceptCall(roomUrl);
+    public void volAcceptedCall(@AuthenticationPrincipal Jwt jwt, String roomName) {
+        helpVideoService.acceptCall((Volunteer) tokenService.getUser(jwt), roomName);
     }
 
 }

@@ -8,8 +8,9 @@ spring:
     show-sql: true
 
 
+
+
 logging:
   level:
-    org:
-      help:
-        hemah: debug
+    #    root: debug
+    org.help.hemah: debug

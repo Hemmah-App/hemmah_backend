@@ -24,3 +24,13 @@ server:
     path: /error
 #    whitelabel:
 #      enabled: false
+
+twilio:
+  #  ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+  #  API_SID: ${TWILIO_API_SID}
+  #  API_SECRET: ${TWILIO_API_SECRET}
+
+  ACCOUNT_SID: "ACd48368859fda2cb695464a585bfba51f"
+  API_SID: "SK80606a85a194aea9b9621b19fe62332c"
+  API_SECRET: "IRmKatYAbdoRPGA4rdOlsCBWTYZxfwhp"
+

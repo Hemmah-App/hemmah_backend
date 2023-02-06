@@ -1,13 +1,11 @@
 package org.help.hemah.service.help_video;
 
 import org.help.hemah.model.Disabled;
+import org.help.hemah.model.Volunteer;
 
 public interface HelpVideoService {
 
     void sendHelpCall(Disabled disabled);
 
-    String generateHelpRoomUrl(Disabled disabled);
-
-
-    void acceptCall(String roomUrl);
+    void acceptCall(Volunteer volunteer, String roomName);
 }
