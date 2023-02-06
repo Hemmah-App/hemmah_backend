@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import org.help.hemah.model.enums.UserType;
 
 @Data
 public class NewUserModel {
@@ -21,5 +22,5 @@ public class NewUserModel {
     private String phoneNumber;
     @Email(message = "Email is Invalid.")
     private String email;
-    private String userType;
+    private UserType userType;
 }
