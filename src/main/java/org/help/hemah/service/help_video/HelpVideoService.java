@@ -5,7 +5,7 @@ import org.help.hemah.model.Volunteer;
 
 public interface HelpVideoService {
 
-    void sendHelpCall(Disabled disabled);
+    void requestHelpCall(Disabled disabled);
 
     void acceptCall(Volunteer volunteer, String roomName);
 }

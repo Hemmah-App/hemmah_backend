@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -28,18 +29,18 @@ public class HelpVideoServiceImpl implements HelpVideoService {
     private final TwilioService twilioService;
 
     @Override
-    public void sendHelpCall(Disabled disabled) {
+    public void requestHelpCall(Disabled disabled) {
         log.info(disabled.getUserData().getEmail() + " is requesting for help");
         List<Volunteer> volunteers = userService.getActiveVolunteers();
         if (volunteers.isEmpty()) {
             log.debug("No volunteers available");
-            messagingTemplate.convertAndSendToUser(disabled.getUserData().getUsername(), "/help_call/response", "No volunteers available");
+            messagingTemplate.convertAndSendToUser(disabled.getUserData().getUsername(), "/help_call/ask", Map.of("message", "No volunteers available"));
 
         } else {
             String roomName = UUID.randomUUID() + disabled.getUserData().getFirstName();
             twilioService.createVideoRoom(roomName, Room.RoomType.GO);
             String disabledToken = twilioService.generateVideoToken(disabled.getUserData().getFirstName(), roomName);
-            messagingTemplate.convertAndSendToUser(disabled.getUserData().getUsername(), "/help_call/response", disabledToken);
+            messagingTemplate.convertAndSendToUser(disabled.getUserData().getUsername(), "/help_call/ask", Map.of("roomName", roomName, "roomToken", disabledToken));
             callVolunteer(roomName);
         }
     }
@@ -49,7 +50,7 @@ public class HelpVideoServiceImpl implements HelpVideoService {
 
         volunteers.forEach(volunteer -> {
             String roomToken = twilioService.generateVideoToken(volunteer.getUserData().getFirstName(), roomName);
-            messagingTemplate.convertAndSendToUser(volunteer.getUserData().getUsername(), "/help_call", roomToken);
+            messagingTemplate.convertAndSendToUser(volunteer.getUserData().getUsername(), "/help_call/answer", Map.of("roomName", roomName, "roomToken", roomToken));
         });
     }
 
