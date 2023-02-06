@@ -9,10 +9,13 @@ import java.util.List;
 public interface UserService {
 
     User signNewUser(NewUserModel user);
+
     User signinUser(String email, String password);
 
     List<Volunteer> getActiveVolunteers();
 
     User getUserByUsername(String username);
+
+    String getUserRoles(String username);
 
 }

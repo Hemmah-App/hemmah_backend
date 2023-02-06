@@ -1,21 +1,17 @@
-package org.help.hemah.service;
+package org.help.hemah.service.token;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.help.hemah.model.User;
+import org.help.hemah.model.embeded.EntityWithUserData;
 import org.help.hemah.service.disabled.DisabledService;
 import org.help.hemah.service.volunteer.VolunteerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.*;
-import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
-import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -29,7 +25,8 @@ public class TokenService {
     private final DisabledService disabledService;
     private final VolunteerService volunteerService;
 
-    public String generateToken(String username) {
+
+    public String generateToken(String username, String roles) {
 
         Instant now = Instant.now();
 
@@ -38,13 +35,15 @@ public class TokenService {
                 .issuedAt(now)
                 .expiresAt(now.plus(10, ChronoUnit.HOURS))
                 .subject(username)
+                .claim("roles", roles)
                 .build();
+
 
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
     public String generateToken(User user) {
-        return generateToken(user.getBaseUserDataEntity().getUsername());
+        return generateToken(user.getBaseUserDataEntity().getUsername(), user.getRoles());
     }
 
     public Authentication getAuthentication(String token) {
@@ -56,7 +55,7 @@ public class TokenService {
         return jwt.getSubject();
     }
 
-    public Object getUser(Jwt jwt) {
+    public EntityWithUserData getUser(Jwt jwt) {
         String username = getUsername(jwt);
         if (disabledService.existsByUsername(username)) {
             return disabledService.getDisabledByUsername(username);

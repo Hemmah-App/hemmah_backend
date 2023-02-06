@@ -1,13 +1,16 @@
 package org.help.hemah.model.embeded;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.help.hemah.model.enums.UserStatus;
+import org.help.hemah.model.enums.UserType;
 
 @Embeddable
 @Data
@@ -33,4 +36,6 @@ public class BaseUserDataEntity {
     private String address;
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 }

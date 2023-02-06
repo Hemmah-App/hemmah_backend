@@ -6,13 +6,14 @@ import org.help.hemah.exeption.auth.WrongEmailOrPasswordException;
 import org.help.hemah.helper.req_model.NewUserModel;
 import org.help.hemah.model.Disabled;
 import org.help.hemah.model.User;
+import org.help.hemah.model.Volunteer;
 import org.help.hemah.model.embeded.BaseUserDataEntity;
 import org.help.hemah.model.enums.UserStatus;
-import org.help.hemah.model.Volunteer;
+import org.help.hemah.model.enums.UserType;
 import org.help.hemah.repository.DisabledRepository;
 import org.help.hemah.repository.UserRepository;
 import org.help.hemah.repository.VolunteerRepository;
-import org.help.hemah.service.TokenService;
+import org.help.hemah.service.token.TokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,44 +43,42 @@ public class UserServiceImpl implements UserService {
     @Override
     public User signNewUser(NewUserModel user) {
 
-        if (user.getUserType().equals("vol") || user.getUserType().equals("dis")) {
+        String username = user.getUserName();
+        String email = user.getEmail();
 
-            String username = user.getUserName();
-            String email = user.getEmail();
-
-            if (userRepository.existsByUsername(username)) {
-                throw new UsernameUsedException("username already used.");
-            }
-
-            if (userRepository.existsByEmail(email)) {
-                throw new EmailUsedException("Email already used.");
-            }
-
-            User newUser = new User();
-            newUser.setBaseUserDataEntity(new BaseUserDataEntity(
-                    user.getUserName(),
-                    passwordEncoder.encode(user.getPassword()),
-                    user.getEmail(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    "NO ADDRESS FOR NOW",
-                    user.getPhoneNumber()
-            ));
-            newUser.setStatus(UserStatus.ACTIVE);
-            newUser.setRoles("ROLE_USER,ROLE_" + user.getUserType().toUpperCase());
-
-            if (user.getUserType().equals("vol")) {
-                Volunteer volunteer = new Volunteer(newUser.getBaseUserDataEntity());
-                volunteerRepository.save(volunteer);
-            } else if (user.getUserType().equals("dis")) {
-                Disabled disabled = new Disabled(newUser.getBaseUserDataEntity());
-                disabledRepository.save(disabled);
-            }
-
-            return userRepository.save(newUser);
-        } else {
-            throw new IllegalStateException("Wrong UserType.");
+        if (userRepository.existsByUsername(username)) {
+            throw new UsernameUsedException("username already used.");
         }
+
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailUsedException("Email already used.");
+        }
+
+        User newUser = new User();
+
+        newUser.setBaseUserDataEntity(new BaseUserDataEntity(
+                user.getUserName(),
+                passwordEncoder.encode(user.getPassword()),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                "NO ADDRESS FOR NOW",
+                user.getPhoneNumber(),
+                user.getUserType()
+        ));
+
+        newUser.setStatus(UserStatus.ACTIVE);
+        newUser.setRoles("USER," + user.getUserType());
+
+        if (user.getUserType() == UserType.VOLUNTEER) {
+            Volunteer volunteer = new Volunteer(newUser.getBaseUserDataEntity());
+            volunteerRepository.save(volunteer);
+        } else if (user.getUserType() == UserType.DISABLED) {
+            Disabled disabled = new Disabled(newUser.getBaseUserDataEntity());
+            disabledRepository.save(disabled);
+        }
+
+        return userRepository.save(newUser);
 
     }
 
@@ -107,5 +106,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new IllegalStateException("User not found."));
+    }
+
+    @Override
+    public String getUserRoles(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new IllegalStateException("User not found.")).getRoles();
     }
 }

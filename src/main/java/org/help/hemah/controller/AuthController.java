@@ -4,19 +4,22 @@ import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.help.hemah.helper.req_model.NewUserModel;
+import org.help.hemah.helper.res_model.UserDataModel;
 import org.help.hemah.model.User;
-import org.help.hemah.service.TokenService;
+import org.help.hemah.model.embeded.BaseUserDataEntity;
+import org.help.hemah.service.token.TokenService;
 import org.help.hemah.service.user.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @RestController
+@RequestMapping("/v1/auth")
 public class AuthController {
 
     private final UserService userService;
@@ -29,17 +32,14 @@ public class AuthController {
 
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody SigninFrom form) {
+    public ResponseEntity<?> signin(@RequestBody SigninForm form) {
         try {
             User user = userService.signinUser(form.getEmail(), form.getPassword());
-            String token = tokenService.generateToken(user);
-            log.debug("Signed in: " + user);
-            return ResponseEntity.ok(token);
+            log.info("Signed in: " + user);
+            return ResponseEntity.ok(Map.of("token", tokenService.generateToken(user)));
         } catch (Exception e) {
-            Map<String, Object> body = new HashMap<>();
-            body.put("Message", e.getMessage());
-            log.error("Error Signing User With Creds: " + form + "\nreason: " + e.getMessage());
-            return ResponseEntity.badRequest().body(body);
+            log.error("Error Signing User With Creeds: " + form + "reason: " + e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("Message", e.getMessage()));
         }
     }
 
@@ -48,22 +48,36 @@ public class AuthController {
         try {
             User user = userService.signNewUser(newUserModel);
             log.debug("new user created: " + user.getBaseUserDataEntity().getUsername());
-            Map<String, Object> body = new HashMap<>();
-            body.put("token", tokenService.generateToken(user.getBaseUserDataEntity().getUsername()));
-            return ResponseEntity.ok(body);
 
+            return ResponseEntity.ok(Map.of("token", tokenService.generateToken(user)));
         } catch (Exception e) {
-            Map<String, Object> body = new HashMap<>();
-            body.put("Message", e.getMessage());
-            log.error("Error Creating User " + newUserModel + "\nreason: " + e.getMessage());
-            return ResponseEntity.badRequest().body(body);
+            return ResponseEntity.badRequest().body(Map.of("Message", "Error Creating User " + newUserModel + "\nreason: " + e.getMessage()));
         }
 
     }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/@me")
+    public UserDataModel getUserData(@AuthenticationPrincipal Jwt jwt) {
+        BaseUserDataEntity baseUserData = tokenService.getUser(jwt).getUserData();
+
+        UserDataModel userData = UserDataModel.builder()
+                .username(baseUserData.getUsername())
+                .email(baseUserData.getEmail())
+                .firstName(baseUserData.getFirstName())
+                .lastName(baseUserData.getLastName())
+                .phoneNumber(baseUserData.getPhoneNumber())
+                .address(baseUserData.getAddress())
+                .userType(baseUserData.getUserType())
+                .build();
+
+        return userData;
+    }
+
 }
 
 @Data
-class SigninFrom {
+class SigninForm {
     private String email;
     private String password;
 }

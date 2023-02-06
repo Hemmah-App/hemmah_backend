@@ -1,5 +1,6 @@
 package org.help.hemah.model.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.help.hemah.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Arrays;
 import java.util.Collection;
 
-
+@Slf4j
 public class SecurityUser implements UserDetails {
 
     private User user;

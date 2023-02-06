@@ -19,7 +19,7 @@ public class User extends BaseEntity implements EntityWithUserData {
     private BaseUserDataEntity baseUserDataEntity;
 
     @Column(columnDefinition = "boolean DEFAULT true")
-    private boolean enabled;
+    private boolean enabled = true;
 
     private String roles;
 
