@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpStatus;
 
+import java.util.Map;
+
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
@@ -16,6 +18,6 @@ public class Response {
     private String reason;
     private String message;
     private String developerMessage;
-    private Object data;
+    private Map<?, ?> data;
 }
 

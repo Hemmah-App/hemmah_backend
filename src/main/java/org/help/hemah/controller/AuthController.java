@@ -114,7 +114,7 @@ public class AuthController {
                         .statusCode(HttpStatus.OK.value())
                         .status(HttpStatus.OK)
                         .message("User Data")
-                        .data(userData)
+                        .data(Map.of("user", userData))
                         .build()
         );
     }
