@@ -4,10 +4,12 @@ import org.help.hemah.model.Volunteer;
 import org.help.hemah.model.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
     @Query("SELECT v FROM Volunteer v " +
             "JOIN User u ON u.baseUserDataEntity.username = v.baseUserDataEntity.username " +

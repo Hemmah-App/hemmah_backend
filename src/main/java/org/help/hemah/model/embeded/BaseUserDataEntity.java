@@ -5,8 +5,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,22 +17,22 @@ import org.help.hemah.model.enums.UserType;
 @NoArgsConstructor
 public class BaseUserDataEntity {
 
-//    @Pattern(regexp = "[A-Za-z][A-Za-z0-9_]{7,29}$", message = "Username is Invalid.")
-    @NotBlank(message = "cannot be empty.")
+    @Pattern(regexp = "[A-Za-z][A-Za-z0-9_]{7,29}$", message = "Username is Invalid.")
     @Column(unique = true)
     private String username;
 
-//    @Pattern(regexp = "[A-Za-z][A-Za-z0-9_]{7,29}$")
-    @NotEmpty
+    // Stores the encoded password, The real password is validated by another class.
     private String password;
 
     @Email(message = "Email is Invalid.")
-    @NotEmpty
+    @Column(unique = true)
     private String email;
 
     private String firstName;
     private String lastName;
     private String address;
+
+    //    @Column(unique = true)
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)

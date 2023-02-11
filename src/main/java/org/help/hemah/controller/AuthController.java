@@ -82,6 +82,8 @@ public class AuthController {
                             .data(Map.of("token", token))
                             .build());
         } catch (Exception e) {
+//            e.printStackTrace();
+
             return ResponseEntity.badRequest().body(
                     response
                             .statusCode(HttpStatus.BAD_REQUEST.value())

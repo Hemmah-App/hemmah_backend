@@ -1,6 +1,7 @@
 package org.help.hemah.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import org.help.hemah.model.enums.UserStatus;
 public class User extends BaseEntity implements EntityWithUserData {
 
     @Embedded
+    @Valid
     private BaseUserDataEntity baseUserDataEntity;
 
     @Column(columnDefinition = "boolean DEFAULT true")

@@ -8,8 +8,12 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: 'true'
         ddl-auto: create-drop
-    show-sql: true
     generate-ddl: true
+
+
+  jackson:
+    serialization:
+      order-map-entries-by-keys: true
 
 rsa:
   private-key: classpath:certs/private.pem
