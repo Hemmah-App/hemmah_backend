@@ -14,7 +14,7 @@ public class NewUserModel {
     @Pattern(regexp = "[A-Za-z][A-Za-z0-9_]{7,29}$", message = "Username is Invalid.")
     private String userName;
 
-    @Pattern(regexp = "[A-Z][A-Za-z0-9_]{7,29}$", message = "Password is Invalid.")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$", message = "Password is Invalid.")
     private String password;
 
     @NotEmpty(message = "first name can not be empty.")
