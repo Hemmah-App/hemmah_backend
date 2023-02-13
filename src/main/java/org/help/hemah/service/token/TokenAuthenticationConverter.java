@@ -29,12 +29,11 @@ public class TokenAuthenticationConverter implements Converter<Jwt, AbstractAuth
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         for (String attributeName : WELL_KNOWN_ROLE_ATTRIBUTE_NAMES) {
-            Object scopes = jwt.getClaims().get(attributeName);
-            if (StringUtils.hasText((String) scopes)) {
+            Object roles = jwt.getClaims().get(attributeName);
+            if (StringUtils.hasText((String) roles)) {
                 authorities.addAll(
-                        Arrays.stream(((String) scopes).split(","))
-                                .map(authority -> ROLE_AUTHORITY_PREFIX + authority)
-                                .map(SimpleGrantedAuthority::new)
+                        Arrays.stream(((String) roles).split(","))
+                                .map(a -> new SimpleGrantedAuthority(ROLE_AUTHORITY_PREFIX + a))
                                 .toList());
             }
         }

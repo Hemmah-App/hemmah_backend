@@ -51,6 +51,7 @@ public class HelpVideoServiceImpl implements HelpVideoService {
         volunteers.forEach(volunteer -> {
             String roomToken = twilioService.generateVideoToken(volunteer.getUserData().getFirstName(), roomName);
             messagingTemplate.convertAndSendToUser(volunteer.getUserData().getUsername(), "/help_call/answer", Map.of("roomName", roomName, "roomToken", roomToken));
+            log.info("Calling volunteer " + volunteer.getUserData().getUsername());
         });
     }
 

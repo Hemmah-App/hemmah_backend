@@ -27,7 +27,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final TokenService tokenService;
-
     public WebSocketConfig(TokenService tokenService) {
         this.tokenService = tokenService;
     }

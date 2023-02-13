@@ -10,7 +10,6 @@ import org.help.hemah.service.token.TokenService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
@@ -35,14 +34,14 @@ public class HelpVideoController {
 
 
     // For Disabled to request for help
-    @PreAuthorize("hasRole('ROLE_DISABLED')")
+//    @PreAuthorize("hasRole('DISABLED')")
     @MessageMapping("/help_call/ask")
     public void sendHelpCall(@AuthenticationPrincipal Jwt jwt) {
         helpVideoService.requestHelpCall((Disabled) tokenService.getUser(jwt));
     }
 
     // For Volunteer to accept the call
-    @PreAuthorize("hasRole('ROLE_VOLUNTEER')")
+//    @PreAuthorize("hasRole('VOLUNTEER')")
     @MessageMapping("/help_call/answer")
     public void volAcceptsCall(@AuthenticationPrincipal Jwt jwt, @RequestBody RoomDetails roomDetails) {
         helpVideoService.acceptCall((Volunteer) tokenService.getUser(jwt), roomDetails.getRoomName());

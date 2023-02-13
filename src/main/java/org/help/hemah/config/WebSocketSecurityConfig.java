@@ -13,9 +13,16 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
     @Override
     protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
         messages
-                .simpMessageDestMatchers("/all").authenticated()
-                .simpTypeMatchers(SimpMessageType.CONNECT, SimpMessageType.DISCONNECT, SimpMessageType.OTHER).permitAll()
-                .anyMessage().authenticated();
+                .nullDestMatcher().authenticated()
+//                .simpDestMatchers("/app/help_call/ask").hasRole("DISABLED")
+//                .simpDestMatchers("/user/help_call/ask").hasRole("DISABLED")
+//                .simpDestMatchers("/app/help_call/answer").hasRole("VOLUNTEER")
+//                .simpDestMatchers("/user/help_call/answer").hasRole("VOLUNTEER")
+                .simpTypeMatchers(
+                        SimpMessageType.CONNECT,
+                        SimpMessageType.DISCONNECT,
+                        SimpMessageType.OTHER).permitAll()
+                .anyMessage().permitAll();
     }
 
     @Override

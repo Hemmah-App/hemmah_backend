@@ -12,5 +12,5 @@ spring:
 
 logging:
   level:
-    #    root: debug
+#    root: debug
     org.help.hemah: debug
