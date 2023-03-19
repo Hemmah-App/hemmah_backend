@@ -3,7 +3,8 @@ package org.help.hemah.helper.res_model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
-import org.help.hemah.model.enums.UserType;
+import org.help.hemah.model.user.UserLanguage;
+import org.help.hemah.model.user.UserType;
 
 @Data
 @Builder
@@ -15,7 +16,8 @@ public class UserDataModel {
     String lastName;
     String phoneNumber;
     String address;
-    String city;
     UserType userType;
+    UserLanguage language;
 
+    Long numberOfHelpsProvided;
 }

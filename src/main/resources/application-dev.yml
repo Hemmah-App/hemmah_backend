@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/hemah_dev?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/hemah_dev?createDatabaseIfNotExist=true&sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
     username: hemah_app
     password: test55@good
 

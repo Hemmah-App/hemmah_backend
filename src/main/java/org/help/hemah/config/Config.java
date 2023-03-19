@@ -7,7 +7,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 @Configuration
-@EnableConfigurationProperties({RsaKeyProperties.class, FirebaseProperties.class})
+@EnableConfigurationProperties({RsaKeyProperties.class, ResourcesProperties.class})
 public class Config {
 
     @Bean

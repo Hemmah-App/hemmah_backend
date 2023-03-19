@@ -1,6 +1,6 @@
 package org.help.hemah.repository;
 
-import org.help.hemah.model.Disabled;
+import org.help.hemah.model.disabled.Disabled;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

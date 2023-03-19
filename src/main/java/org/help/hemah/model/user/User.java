@@ -1,13 +1,13 @@
-package org.help.hemah.model;
+package org.help.hemah.model.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.help.hemah.model.BaseEntity;
 import org.help.hemah.model.embeded.BaseUserDataEntity;
 import org.help.hemah.model.embeded.EntityWithUserData;
-import org.help.hemah.model.enums.UserStatus;
 
 
 @Entity
@@ -27,6 +27,14 @@ public class User extends BaseEntity implements EntityWithUserData {
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private UserType type;
+
+    @Enumerated(EnumType.STRING)
+    private UserLanguage language;
+
+    private String profilePictureUrl;
 
     @Override
     public BaseUserDataEntity getUserData() {

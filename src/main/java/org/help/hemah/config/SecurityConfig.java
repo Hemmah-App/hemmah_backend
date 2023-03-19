@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeRequests()
                 .requestMatchers("/signin", "/signup").permitAll()
+                .requestMatchers("/ws").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .oauth2ResourceServer()

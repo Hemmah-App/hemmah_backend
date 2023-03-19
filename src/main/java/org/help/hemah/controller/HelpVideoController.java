@@ -2,10 +2,10 @@ package org.help.hemah.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.help.hemah.helper.req_model.RoomDetails;
-import org.help.hemah.model.Disabled;
-import org.help.hemah.model.Volunteer;
-import org.help.hemah.service.help_video.HelpVideoService;
+import org.help.hemah.helper.req_model.RoomDetailsModel;
+import org.help.hemah.model.disabled.Disabled;
+import org.help.hemah.model.volunteer.Volunteer;
+import org.help.hemah.service.help_video.HelpVideoCallService;
 import org.help.hemah.service.token.TokenService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class HelpVideoController {
 
     private final TokenService tokenService;
-    private final HelpVideoService helpVideoService;
+    private final HelpVideoCallService helpVideoCallService;
 
     private final SimpMessagingTemplate template;
 
@@ -37,14 +37,14 @@ public class HelpVideoController {
 //    @PreAuthorize("hasRole('DISABLED')")
     @MessageMapping("/help_call/ask")
     public void sendHelpCall(@AuthenticationPrincipal Jwt jwt) {
-        helpVideoService.requestHelpCall((Disabled) tokenService.getUser(jwt));
+        helpVideoCallService.requestHelpCall((Disabled) tokenService.getUser(jwt));
     }
 
     // For Volunteer to accept the call
 //    @PreAuthorize("hasRole('VOLUNTEER')")
     @MessageMapping("/help_call/answer")
-    public void volAcceptsCall(@AuthenticationPrincipal Jwt jwt, @RequestBody RoomDetails roomDetails) {
-        helpVideoService.acceptCall((Volunteer) tokenService.getUser(jwt), roomDetails.getRoomName());
+    public void volAcceptsCall(@AuthenticationPrincipal Jwt jwt, @RequestBody RoomDetailsModel roomDetailsModel) {
+        helpVideoCallService.acceptCall((Volunteer) tokenService.getUser(jwt), roomDetailsModel.getRoomName());
     }
 
 }

@@ -1,20 +1,22 @@
 package org.help.hemah.controller;
 
 import jakarta.validation.Valid;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.help.hemah.helper.req_model.NewUserModel;
-import org.help.hemah.helper.res_model.Response;
+import org.help.hemah.helper.req_model.SigninModel;
+import org.help.hemah.helper.res_model.ResponseModel;
 import org.help.hemah.helper.res_model.UserDataModel;
-import org.help.hemah.model.User;
 import org.help.hemah.model.embeded.BaseUserDataEntity;
+import org.help.hemah.model.user.User;
+import org.help.hemah.model.user.UserType;
+import org.help.hemah.service.auth.AuthenticationFacade;
 import org.help.hemah.service.token.TokenService;
 import org.help.hemah.service.user.UserService;
+import org.help.hemah.service.volunteer.VolunteerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -23,21 +25,18 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
+    private final VolunteerService volunteerService;
     private final TokenService tokenService;
-
-    public AuthController(UserService userService, TokenService tokenService) {
-        this.userService = userService;
-        this.tokenService = tokenService;
-    }
-
+    private final AuthenticationFacade authenticationFacade;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody SigninForm form) {
+    public ResponseEntity<?> signin(@RequestBody SigninModel form) {
 
-        Response.ResponseBuilder<?, ?> response = Response.builder()
+        ResponseModel.ResponseModelBuilder<?, ?> response = ResponseModel.builder()
                 .timeStamp(LocalDateTime.now().toString());
 
         try {
@@ -66,7 +65,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody NewUserModel newUserModel) {
-        Response.ResponseBuilder<?, ?> response = Response.builder()
+        ResponseModel.ResponseModelBuilder<?, ?> response = ResponseModel.builder()
                 .timeStamp(LocalDateTime.now().toString());
 
         try {
@@ -97,35 +96,34 @@ public class AuthController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/@me")
-    public ResponseEntity<?> getUserData(@AuthenticationPrincipal Jwt jwt) {
-        BaseUserDataEntity baseUserData = tokenService.getUser(jwt).getUserData();
+    public ResponseEntity<?> getUserData() {
+        User user = authenticationFacade.getAuthenticatedUser();
+        BaseUserDataEntity baseUserData = user.getBaseUserDataEntity();
 
-        UserDataModel userData = UserDataModel.builder()
+        UserDataModel.UserDataModelBuilder userData = UserDataModel.builder()
                 .username(baseUserData.getUsername())
                 .email(baseUserData.getEmail())
                 .firstName(baseUserData.getFirstName())
                 .lastName(baseUserData.getLastName())
                 .phoneNumber(baseUserData.getPhoneNumber())
                 .address(baseUserData.getAddress())
-                .userType(baseUserData.getUserType())
-                .build();
+                .userType(user.getType())
+                .language(user.getLanguage());
+
+        if (user.getType().equals(UserType.VOLUNTEER)) {
+            userData.numberOfHelpsProvided(volunteerService.getVolunteerHelpCount(baseUserData.getUsername()));
+        }
+
 
         return ResponseEntity.ok(
-                Response.builder()
+                ResponseModel.builder()
                         .timeStamp(LocalDateTime.now().toString())
                         .statusCode(HttpStatus.OK.value())
                         .status(HttpStatus.OK)
                         .message("User Data")
-                        .data(Map.of("user", userData))
+                        .data(Map.of("user", userData.build()))
                         .build()
         );
     }
 
 }
-
-@Data
-class SigninForm {
-    private String email;
-    private String password;
-}
-

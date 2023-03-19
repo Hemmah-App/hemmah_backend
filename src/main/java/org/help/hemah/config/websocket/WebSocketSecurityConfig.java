@@ -1,4 +1,4 @@
-package org.help.hemah.config;
+package org.help.hemah.config.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessageType;

@@ -1,6 +1,7 @@
 package org.help.hemah.service.token;
 
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -18,7 +19,7 @@ public class TokenAuthenticationConverter implements Converter<Jwt, AbstractAuth
     private static final Collection<String> WELL_KNOWN_ROLE_ATTRIBUTE_NAMES = Arrays.asList("scope", "scp", "authorities", "roles");
 
     @Override
-    public AbstractAuthenticationToken convert(Jwt source) {
+    public AbstractAuthenticationToken convert(@NonNull Jwt source) {
         Collection<SimpleGrantedAuthority> authorities = this.getAuthorities(source);
 
         return new JwtAuthenticationToken(source, authorities);

@@ -1,7 +1,7 @@
 package org.help.hemah.service.disabled;
 
 import lombok.RequiredArgsConstructor;
-import org.help.hemah.model.Disabled;
+import org.help.hemah.model.disabled.Disabled;
 import org.help.hemah.repository.DisabledRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

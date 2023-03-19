@@ -1,6 +1,6 @@
 package org.help.hemah.service.disabled;
 
-import org.help.hemah.model.Disabled;
+import org.help.hemah.model.disabled.Disabled;
 
 public interface DisabledService {
 

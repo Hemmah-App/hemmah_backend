@@ -1,7 +1,7 @@
 package org.help.hemah.exeption;
 
 import lombok.extern.slf4j.Slf4j;
-import org.help.hemah.helper.res_model.Response;
+import org.help.hemah.helper.res_model.ResponseModel;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,9 +19,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class BaseExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Response> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ResponseModel> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         return ResponseEntity.badRequest().body(
-                Response.builder()
+                ResponseModel.builder()
                         .statusCode(BAD_REQUEST.value())
                         .status(BAD_REQUEST)
                         .message("INPUT DATA IS NOT VALID.")
@@ -42,9 +42,9 @@ public class BaseExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Response> handleException(Exception ex) {
+    public ResponseEntity<ResponseModel> handleException(Exception ex) {
         return ResponseEntity.badRequest().body(
-                Response.builder()
+                ResponseModel.builder()
                         .statusCode(BAD_REQUEST.value())
                         .status(BAD_REQUEST)
                         .message("Exception.")

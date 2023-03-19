@@ -14,13 +14,27 @@ spring:
   jackson:
     serialization:
       order-map-entries-by-keys: true
+    parser:
+      allow-single-quotes: true
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 5MB
+      max-request-size: 5MB
 
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
 
+resources:
+  profile-pics-path: ./src/main/resources/static/images/user/profile-pics
+
+
 firebase:
   service-account-file: ./src/main/resources/certs/hemmah_firebase_creds.json
+
 
 server:
   error:

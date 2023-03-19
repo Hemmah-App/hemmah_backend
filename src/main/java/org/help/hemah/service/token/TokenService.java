@@ -2,8 +2,8 @@ package org.help.hemah.service.token;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.help.hemah.model.User;
 import org.help.hemah.model.embeded.EntityWithUserData;
+import org.help.hemah.model.user.User;
 import org.help.hemah.service.disabled.DisabledService;
 import org.help.hemah.service.volunteer.VolunteerService;
 import org.springframework.security.core.Authentication;

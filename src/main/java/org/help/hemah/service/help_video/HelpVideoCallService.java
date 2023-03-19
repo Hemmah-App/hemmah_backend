@@ -1,9 +1,9 @@
 package org.help.hemah.service.help_video;
 
-import org.help.hemah.model.Disabled;
-import org.help.hemah.model.Volunteer;
+import org.help.hemah.model.disabled.Disabled;
+import org.help.hemah.model.volunteer.Volunteer;
 
-public interface HelpVideoService {
+public interface HelpVideoCallService {
 
     void requestHelpCall(Disabled disabled);
 

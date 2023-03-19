@@ -1,10 +1,11 @@
 package org.help.hemah.service.user;
 
 import org.help.hemah.helper.req_model.NewUserModel;
-import org.help.hemah.model.User;
-import org.help.hemah.model.Volunteer;
+import org.help.hemah.model.user.User;
+import org.help.hemah.model.user.UserLanguage;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
 
 public interface UserService {
 
@@ -12,10 +13,14 @@ public interface UserService {
 
     User signinUser(String email, String password);
 
-    List<Volunteer> getActiveVolunteers();
+    User getUser(String username);
 
-    User getUserByUsername(String username);
+    byte[] getProfilePic() throws IOException;
 
-    String getUserRoles(String username);
+    boolean updateProfilePic(MultipartFile profilePic) throws IOException;
+
+    void changePassword(String oldPassword, String newPassword);
+
+    void changeLanguage(UserLanguage language);
 
 }

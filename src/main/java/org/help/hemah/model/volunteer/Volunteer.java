@@ -1,10 +1,11 @@
-package org.help.hemah.model;
+package org.help.hemah.model.volunteer;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.help.hemah.model.BaseEntity;
 import org.help.hemah.model.embeded.BaseUserDataEntity;
 import org.help.hemah.model.embeded.EntityWithUserData;
 
