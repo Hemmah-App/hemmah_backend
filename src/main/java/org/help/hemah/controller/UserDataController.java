@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @PreAuthorize("hasRole('USER')")
-@RequestMapping("/api/v1/user")
+@RequestMapping("/v1/user")
 @RequiredArgsConstructor
 @RestController
 @Slf4j
