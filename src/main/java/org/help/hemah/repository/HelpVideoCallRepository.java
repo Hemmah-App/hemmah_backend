@@ -1,6 +1,6 @@
 package org.help.hemah.repository;
 
-import org.help.hemah.model.help_video_call.HelpVideoCall;
+import org.help.hemah.domain.help_video_call.HelpVideoCall;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

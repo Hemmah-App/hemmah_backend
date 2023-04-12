@@ -1,9 +1,9 @@
 package org.help.hemah.service.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.help.hemah.model.disabled.Disabled;
-import org.help.hemah.model.user.User;
-import org.help.hemah.model.volunteer.Volunteer;
+import org.help.hemah.domain.disabled.Disabled;
+import org.help.hemah.domain.user.User;
+import org.help.hemah.domain.volunteer.Volunteer;
 import org.help.hemah.repository.DisabledRepository;
 import org.help.hemah.repository.UserRepository;
 import org.help.hemah.repository.VolunteerRepository;

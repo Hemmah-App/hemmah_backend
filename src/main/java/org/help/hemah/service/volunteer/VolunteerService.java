@@ -1,6 +1,6 @@
 package org.help.hemah.service.volunteer;
 
-import org.help.hemah.model.volunteer.Volunteer;
+import org.help.hemah.domain.volunteer.Volunteer;
 
 import java.util.List;
 

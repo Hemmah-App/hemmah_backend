@@ -3,8 +3,8 @@ package org.help.hemah.helper.res_model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
-import org.help.hemah.model.user.UserLanguage;
-import org.help.hemah.model.user.UserType;
+import org.help.hemah.domain.user.UserLanguage;
+import org.help.hemah.domain.user.UserType;
 
 @Data
 @Builder

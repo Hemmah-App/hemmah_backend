@@ -1,7 +1,7 @@
 package org.help.hemah.service.help_request;
 
+import org.help.hemah.domain.help_request.HelpRequest;
 import org.help.hemah.helper.req_model.NewHelpRequestModel;
-import org.help.hemah.model.help_request.HelpRequest;
 
 import java.util.List;
 

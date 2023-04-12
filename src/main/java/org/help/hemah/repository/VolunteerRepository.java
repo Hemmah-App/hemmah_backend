@@ -1,7 +1,7 @@
 package org.help.hemah.repository;
 
-import org.help.hemah.model.user.UserStatus;
-import org.help.hemah.model.volunteer.Volunteer;
+import org.help.hemah.domain.user.UserStatus;
+import org.help.hemah.domain.volunteer.Volunteer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

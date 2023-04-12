@@ -1,7 +1,7 @@
 package org.help.hemah.service.volunteer;
 
-import org.help.hemah.model.user.UserStatus;
-import org.help.hemah.model.volunteer.Volunteer;
+import org.help.hemah.domain.user.UserStatus;
+import org.help.hemah.domain.volunteer.Volunteer;
 import org.help.hemah.repository.VolunteerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

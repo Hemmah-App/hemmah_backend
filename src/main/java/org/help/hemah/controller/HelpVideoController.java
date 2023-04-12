@@ -2,14 +2,13 @@ package org.help.hemah.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.help.hemah.domain.disabled.Disabled;
+import org.help.hemah.domain.volunteer.Volunteer;
 import org.help.hemah.helper.req_model.RoomDetailsModel;
-import org.help.hemah.model.disabled.Disabled;
-import org.help.hemah.model.volunteer.Volunteer;
 import org.help.hemah.service.help_video.HelpVideoCallService;
 import org.help.hemah.service.token.TokenService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
@@ -22,8 +21,6 @@ public class HelpVideoController {
 
     private final TokenService tokenService;
     private final HelpVideoCallService helpVideoCallService;
-
-    private final SimpMessagingTemplate template;
 
     @MessageMapping("/notify_all")
     @SendTo("/all")

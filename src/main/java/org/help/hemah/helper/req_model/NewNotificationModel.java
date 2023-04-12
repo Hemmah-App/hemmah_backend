@@ -1,7 +1,7 @@
 package org.help.hemah.helper.req_model;
 
 import lombok.Data;
-import org.help.hemah.model.notification.NotificationType;
+import org.help.hemah.domain.notification.NotificationType;
 import org.hibernate.validator.constraints.Length;
 
 @Data

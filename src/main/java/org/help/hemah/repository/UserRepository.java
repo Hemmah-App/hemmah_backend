@@ -1,6 +1,6 @@
 package org.help.hemah.repository;
 
-import org.help.hemah.model.user.User;
+import org.help.hemah.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

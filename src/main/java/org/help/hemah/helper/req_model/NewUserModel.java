@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import org.help.hemah.model.user.UserType;
+import org.help.hemah.domain.user.UserType;
 import org.springframework.validation.annotation.Validated;
 
 @Data

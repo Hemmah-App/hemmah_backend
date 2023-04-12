@@ -1,6 +1,6 @@
 package org.help.hemah.service.user;
 
-import org.help.hemah.model.config.SecurityUser;
+import org.help.hemah.domain.config.SecurityUser;
 import org.help.hemah.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
