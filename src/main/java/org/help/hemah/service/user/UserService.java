@@ -6,8 +6,11 @@ import org.help.hemah.helper.req_model.NewUserModel;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface UserService {
+
+    List<User> getAllUsers();
 
     User signNewUser(NewUserModel user);
 

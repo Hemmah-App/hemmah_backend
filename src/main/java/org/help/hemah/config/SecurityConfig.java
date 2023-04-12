@@ -40,6 +40,10 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeRequests()
                 .requestMatchers("/v1/auth/signin", "/v1/auth/signup").permitAll()
+
+                // Allow access to anyone temporarily - don't forget to remove this from AdminController as well
+                .requestMatchers("/v1/admin/user").permitAll()
+
                 .requestMatchers("/ws").permitAll()
                 .anyRequest().authenticated()
                 .and()
