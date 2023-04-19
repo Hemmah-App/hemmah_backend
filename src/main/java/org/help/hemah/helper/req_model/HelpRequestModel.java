@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import java.time.LocalDate;
 
 @Data
-public class NewHelpRequestModel {
+public class HelpRequestModel {
     @Length(max = 250)
     private String title;
     @Length(max = 5000)

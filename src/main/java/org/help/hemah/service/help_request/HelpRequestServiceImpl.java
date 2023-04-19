@@ -4,9 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.help.hemah.domain.disabled.Disabled;
 import org.help.hemah.domain.help_request.HelpRequest;
 import org.help.hemah.domain.help_request.RequestStatus;
-import org.help.hemah.helper.req_model.NewHelpRequestModel;
+import org.help.hemah.helper.req_model.HelpRequestModel;
 import org.help.hemah.repository.help_requset.HelpRequestRepository;
 import org.help.hemah.service.auth.AuthenticationFacade;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public class HelpRequestServiceImpl implements HelpRequestService {
 
     private final HelpRequestRepository helpRequestRepository;
     private final AuthenticationFacade authenticationFacade;
+
+    private boolean requestBelongsToDisabled(HelpRequest helpRequest) {
+        Disabled disabled = authenticationFacade.getAuthenticatedDisabled();
+        return helpRequest.getDisabled().getId().equals(disabled.getId());
+    }
 
     @Override
     public List<HelpRequest> getDisabledHelpRequests() {
@@ -32,37 +38,58 @@ public class HelpRequestServiceImpl implements HelpRequestService {
         return helpRequestRepository.findAllByStatus(RequestStatus.NEEDS_HELP);
     }
 
+    @PreAuthorize("hasRole('DISABLED')")
     @Override
-    public Long addNewHelpRequest(NewHelpRequestModel newHelpRequestModel) {
+    public Long addNewHelpRequest(HelpRequestModel helpRequestModel) {
         Disabled disabled = authenticationFacade.getAuthenticatedDisabled();
 
         HelpRequest helpRequest = new HelpRequest(
-                newHelpRequestModel.getTitle(),
-                newHelpRequestModel.getDescription(),
-                newHelpRequestModel.getDate(),
+                helpRequestModel.getTitle(),
+                helpRequestModel.getDescription(),
+                helpRequestModel.getDate(),
                 disabled,
                 RequestStatus.NEEDS_HELP,
-                newHelpRequestModel.getLocation()
+                helpRequestModel.getLocation()
         );
 
-        helpRequest.setLongitude(newHelpRequestModel.getLongitude());
-        helpRequest.setLatitude(newHelpRequestModel.getLatitude());
+        helpRequest.setLongitude(helpRequestModel.getLongitude());
+        helpRequest.setLatitude(helpRequestModel.getLatitude());
 
         return helpRequestRepository.save(helpRequest).getId();
     }
 
+    @PreAuthorize("hasRole('DISABLED')")
     @Override
-    public void removeHelpRequest(Long helpRequestId) {
-        Disabled disabled = authenticationFacade.getAuthenticatedDisabled();
+    public void editHelpRequest(Long helpRequestId, HelpRequestModel helpRequestModel) {
         HelpRequest helpRequest = helpRequestRepository.findById(helpRequestId).orElseThrow();
 
-        if (!helpRequest.getDisabled().equals(disabled))
+        if (!requestBelongsToDisabled(helpRequest))
+            throw new RuntimeException("You are not the owner of this help request");
+
+
+        helpRequest.setTitle(helpRequestModel.getTitle());
+        helpRequest.setDescription(helpRequestModel.getDescription());
+        helpRequest.setDate(helpRequestModel.getDate());
+        helpRequest.setMeetingLocation(helpRequestModel.getLocation());
+        helpRequest.setLongitude(helpRequestModel.getLongitude());
+        helpRequest.setLatitude(helpRequestModel.getLatitude());
+
+        helpRequestRepository.save(helpRequest);
+    }
+
+    @PreAuthorize("hasRole('DISABLED')")
+    @Override
+    public void removeHelpRequest(Long helpRequestId) {
+        HelpRequest helpRequest = helpRequestRepository.findById(helpRequestId).orElseThrow();
+
+        if (!requestBelongsToDisabled(helpRequest))
             throw new RuntimeException("You are not the owner of this help request");
 
         helpRequest.setStatus(RequestStatus.CANCELED);
         helpRequestRepository.save(helpRequest);
     }
 
+    @PreAuthorize("hasRole('DISABLED')")
     @Override
     public void markHelpRequestAsComplete(Long helpRequestId) {
         Disabled disabled = authenticationFacade.getAuthenticatedDisabled();
@@ -74,4 +101,6 @@ public class HelpRequestServiceImpl implements HelpRequestService {
         helpRequest.setStatus(RequestStatus.COMPLETED);
         helpRequestRepository.save(helpRequest);
     }
+
+
 }

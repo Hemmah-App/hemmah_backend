@@ -42,4 +42,8 @@ public class BaseUserDataEntity {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }
