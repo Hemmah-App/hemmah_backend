@@ -27,6 +27,12 @@ public class NewUserModel {
     @NotEmpty(message = "last name can not be empty.")
     private String lastName;
 
+    // Optional Parameters
+    private String address;
+    private Double longitude;
+    private Double latitude;
+
+
     private String phoneNumber;
 
     @Email(message = "Email is Invalid.")

@@ -27,9 +27,19 @@ public class BaseUserDataEntity {
 
     private String firstName;
     private String lastName;
-    private String address;
 
     //    @Column(unique = true)
     private String phoneNumber;
+    private String address;
+    private Double longitude;
+    private Double latitude;
 
+    public BaseUserDataEntity(String username, String password, String email, String firstName, String lastName, String phoneNumber) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+    }
 }

@@ -68,29 +68,17 @@ public class AuthController {
         ResponseModel.ResponseModelBuilder<?, ?> response = ResponseModel.builder()
                 .timeStamp(LocalDateTime.now().toString());
 
-        try {
-            User user = userService.signNewUser(newUserModel);
-            String token = tokenService.generateToken(user);
-            log.debug("new user created: " + user.getBaseUserDataEntity().getUsername());
+        User user = userService.signNewUser(newUserModel);
+        String token = tokenService.generateToken(user);
+        log.debug("new user created: " + user.getBaseUserDataEntity().getUsername());
 
-            return ResponseEntity.ok(
-                    response
-                            .statusCode(HttpStatus.OK.value())
-                            .status(HttpStatus.OK)
-                            .message("User signed up successfully")
-                            .data(Map.of("token", token))
-                            .build());
-        } catch (Exception e) {
-//            e.printStackTrace();
-
-            return ResponseEntity.badRequest().body(
-                    response
-                            .statusCode(HttpStatus.BAD_REQUEST.value())
-                            .status(HttpStatus.BAD_REQUEST)
-                            .message("Error Creating User " + newUserModel)
-                            .reason(e.getMessage())
-                            .build());
-        }
+        return ResponseEntity.ok(
+                response
+                        .statusCode(HttpStatus.OK.value())
+                        .status(HttpStatus.OK)
+                        .message("User signed up successfully")
+                        .data(Map.of("token", token))
+                        .build());
 
     }
 

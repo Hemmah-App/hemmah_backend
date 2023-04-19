@@ -80,15 +80,20 @@ public class UserServiceImpl implements UserService {
 
         User newUser = new User();
 
-        newUser.setBaseUserDataEntity(new BaseUserDataEntity(
+        BaseUserDataEntity userData = new BaseUserDataEntity(
                 user.getUserName(),
                 passwordEncoder.encode(user.getPassword()),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                "NO ADDRESS FOR NOW",
                 user.getPhoneNumber()
-        ));
+        );
+
+        userData.setAddress(user.getAddress());
+        userData.setLongitude(user.getLongitude());
+        userData.setLatitude(user.getLatitude());
+
+        newUser.setBaseUserDataEntity(userData);
 
         newUser.setStatus(UserStatus.ACTIVE);
         newUser.setType(user.getUserType());
@@ -146,7 +151,12 @@ public class UserServiceImpl implements UserService {
     public byte[] getProfilePic() throws IOException {
         User user = authenticationFacade.getAuthenticatedUser();
 
-        return Files.readAllBytes(Path.of(user.getProfilePictureUrl()));
+        try {
+            return Files.readAllBytes(Path.of(user.getProfilePictureUrl()));
+        } catch (Exception e) {
+            return Files.readAllBytes(Path.of(profilePicsPath + "\\default.png"));
+        }
+
     }
 
     @Override
