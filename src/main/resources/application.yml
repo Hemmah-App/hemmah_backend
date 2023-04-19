@@ -29,7 +29,7 @@ rsa:
   public-key: classpath:certs/public.pem
 
 resources:
-  profile-pics-path: classpath:static/images/user/profile-pics
+  profile-pics-path: ./src/main/resources/static/images/user/profile-pics
 
 
 firebase:
