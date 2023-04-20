@@ -18,6 +18,7 @@ import org.help.hemah.repository.UserRepository;
 import org.help.hemah.repository.VolunteerRepository;
 import org.help.hemah.service.auth.AuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -39,7 +40,10 @@ public class UserServiceImpl implements UserService {
     private DisabledRepository disabledRepository;
     private UserRepository userRepository;
 
+    private ResourcesProperties resourcesProperties;
+    private ResourceLoader resourceLoader;
     private Path profilePicsPath;
+    private Path DEFAULT_PROFILE_PIC_PATH;
 
     @Autowired
     public UserServiceImpl(AuthenticationFacade authenticationFacade,
@@ -47,13 +51,19 @@ public class UserServiceImpl implements UserService {
                            VolunteerRepository volunteerRepository,
                            DisabledRepository disabledRepository,
                            UserRepository userRepository,
-                           ResourcesProperties resourcesProperties) {
+                           ResourcesProperties resourcesProperties,
+                           ResourceLoader resourceLoader)
+            throws IOException {
         this.authenticationFacade = authenticationFacade;
         this.passwordEncoder = passwordEncoder;
         this.volunteerRepository = volunteerRepository;
         this.disabledRepository = disabledRepository;
         this.userRepository = userRepository;
-        this.profilePicsPath = resourcesProperties.profilePicsPath();
+
+        this.resourcesProperties = resourcesProperties;
+        this.resourceLoader = resourceLoader;
+        this.profilePicsPath = resourceLoader.getResource(resourcesProperties.profilePicsPath()).getFile().toPath();
+        this.DEFAULT_PROFILE_PIC_PATH = profilePicsPath.resolve("default.png");
 
     }
 
@@ -152,9 +162,9 @@ public class UserServiceImpl implements UserService {
         User user = authenticationFacade.getAuthenticatedUser();
 
         try {
-            return Files.readAllBytes(Path.of(user.getProfilePictureUrl()));
+            return Files.readAllBytes(resourceLoader.getResource(user.getProfilePictureUrl()).getFile().toPath());
         } catch (Exception e) {
-            return Files.readAllBytes(Path.of(profilePicsPath + "\\default.png"));
+            return Files.readAllBytes(this.DEFAULT_PROFILE_PIC_PATH);
         }
 
     }
@@ -169,12 +179,12 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Only jpeg and jpg files are allowed.");
         }
 
-        String pictureUrl = profilePicsPath + "\\" + user.getBaseUserDataEntity().getUsername() + "." + contentType.split("/")[1];
+        String pictureName = user.getBaseUserDataEntity().getUsername() + "." + contentType.split("/")[1];
 
 
-        FileCopyUtils.copy(profilePic.getBytes(), new File(pictureUrl));
+        FileCopyUtils.copy(profilePic.getBytes(), new File(profilePicsPath.normalize() + "\\" + pictureName));
 
-        user.setProfilePictureUrl(pictureUrl);
+        user.setProfilePictureUrl(resourcesProperties.profilePicsPath() + "/" + pictureName);
         userRepository.save(user);
 
         return true;
