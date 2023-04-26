@@ -34,7 +34,8 @@ public class User extends BaseEntity implements EntityWithUserData {
     @Enumerated(EnumType.STRING)
     private UserLanguage language;
 
-    private String profilePictureUrl;
+    @Lob
+    private byte[] profilePicture;
 
     @Override
     public BaseUserDataEntity getUserData() {

@@ -18,7 +18,7 @@ public interface UserService {
 
     User getUser(String username);
 
-    byte[] getProfilePic() throws IOException;
+    byte[] getProfilePic();
 
     boolean updateProfilePic(MultipartFile profilePic) throws IOException;
 

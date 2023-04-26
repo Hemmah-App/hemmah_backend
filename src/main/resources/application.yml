@@ -28,10 +28,6 @@ rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
 
-resources:
-  profile-pics-path: classpath:static/images/user/profile-pics
-
-
 firebase:
   service-account-file: ./src/main/resources/certs/hemmah_firebase_creds.json
 

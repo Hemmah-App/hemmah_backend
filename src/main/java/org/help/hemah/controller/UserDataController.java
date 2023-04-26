@@ -8,6 +8,7 @@ import org.help.hemah.helper.req_model.ChangePasswordModel;
 import org.help.hemah.helper.res_model.ResponseModel;
 import org.help.hemah.service.user.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -51,14 +52,15 @@ public class UserDataController {
         );
     }
 
-    @GetMapping(value = "/profile-pic", produces = "image/jpeg")
-    public ResponseEntity<byte[]> getProfilePic() throws IOException {
+    @GetMapping(value = "/profile-pic", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> getProfilePic() {
 
-        return ResponseEntity.ok(userService.getProfilePic());
+        return ResponseEntity
+                .ok(userService.getProfilePic());
     }
 
     @PostMapping(value = "/profile-pic")
-    public ResponseEntity<ResponseModel> updateProfilePic(@RequestParam MultipartFile profilePic) throws IOException {
+    public ResponseEntity<ResponseModel> updateProfilePic(@RequestPart MultipartFile profilePic) throws IOException {
         userService.updateProfilePic(profilePic);
 
         return ResponseEntity

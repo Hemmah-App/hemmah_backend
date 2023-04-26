@@ -1,7 +1,7 @@
 package org.help.hemah.service.user;
 
 import lombok.NoArgsConstructor;
-import org.help.hemah.config.ResourcesProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.help.hemah.domain.disabled.Disabled;
 import org.help.hemah.domain.embeded.BaseUserDataEntity;
 import org.help.hemah.domain.user.User;
@@ -18,20 +18,16 @@ import org.help.hemah.repository.UserRepository;
 import org.help.hemah.repository.VolunteerRepository;
 import org.help.hemah.service.auth.AuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 @Service
 @NoArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private AuthenticationFacade authenticationFacade;
@@ -40,31 +36,17 @@ public class UserServiceImpl implements UserService {
     private DisabledRepository disabledRepository;
     private UserRepository userRepository;
 
-    private ResourcesProperties resourcesProperties;
-    private ResourceLoader resourceLoader;
-    private Path profilePicsPath;
-    private Path DEFAULT_PROFILE_PIC_PATH;
-
     @Autowired
     public UserServiceImpl(AuthenticationFacade authenticationFacade,
                            PasswordEncoder passwordEncoder,
                            VolunteerRepository volunteerRepository,
                            DisabledRepository disabledRepository,
-                           UserRepository userRepository,
-                           ResourcesProperties resourcesProperties,
-                           ResourceLoader resourceLoader)
-            throws IOException {
+                           UserRepository userRepository) {
         this.authenticationFacade = authenticationFacade;
         this.passwordEncoder = passwordEncoder;
         this.volunteerRepository = volunteerRepository;
         this.disabledRepository = disabledRepository;
         this.userRepository = userRepository;
-
-        this.resourcesProperties = resourcesProperties;
-        this.resourceLoader = resourceLoader;
-        this.profilePicsPath = resourceLoader.getResource(resourcesProperties.profilePicsPath()).getFile().toPath();
-        this.DEFAULT_PROFILE_PIC_PATH = profilePicsPath.resolve("default.png");
-
     }
 
     @Override
@@ -158,14 +140,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public byte[] getProfilePic() throws IOException {
+    public byte[] getProfilePic() {
         User user = authenticationFacade.getAuthenticatedUser();
 
-        try {
-            return Files.readAllBytes(resourceLoader.getResource(user.getProfilePictureUrl()).getFile().toPath());
-        } catch (Exception e) {
-            return Files.readAllBytes(this.DEFAULT_PROFILE_PIC_PATH);
-        }
+        return user.getProfilePicture();
 
     }
 
@@ -175,16 +153,12 @@ public class UserServiceImpl implements UserService {
 
         String contentType = profilePic.getContentType();
 
-        if (contentType == null || (!contentType.contains("jpeg") && !contentType.contains("jpg"))) {
-            throw new RuntimeException("Only jpeg and jpg files are allowed.");
+        if (contentType == null || (!contentType.contains("jpeg") && !contentType.contains("jpg") && !contentType.contains("png"))) {
+            throw new RuntimeException("Only jpeg/jpg and png files are allowed.");
         }
 
-        String pictureName = user.getBaseUserDataEntity().getUsername() + "." + contentType.split("/")[1];
+        user.setProfilePicture(profilePic.getBytes());
 
-
-        FileCopyUtils.copy(profilePic.getBytes(), new File(profilePicsPath.normalize() + "\\" + pictureName));
-
-        user.setProfilePictureUrl(resourcesProperties.profilePicsPath() + "/" + pictureName);
         userRepository.save(user);
 
         return true;
