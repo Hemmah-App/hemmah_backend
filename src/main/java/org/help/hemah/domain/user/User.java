@@ -35,6 +35,7 @@ public class User extends BaseEntity implements EntityWithUserData {
     private UserLanguage language;
 
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] profilePicture;
 
     @Override
