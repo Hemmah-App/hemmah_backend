@@ -7,7 +7,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 @Configuration
-@EnableConfigurationProperties({RsaKeyProperties.class, ResourcesProperties.class})
+@EnableConfigurationProperties({RsaKeyProperties.class})
 public class Config {
 
     @Bean
