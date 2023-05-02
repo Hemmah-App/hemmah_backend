@@ -56,6 +56,7 @@ public class HelpVideoCallServiceImpl implements HelpVideoCallService {
         HelpVideoCall helpVideoCall = new HelpVideoCall(roomName, disabled);
         helpVideoCallRepository.save(helpVideoCall);
 
+        // Send help call details to disabled in order to wait in room for a volunteer
         messagingTemplate.convertAndSendToUser(
                 disabled.getUserData().getUsername(),
                 "/help_call/ask",

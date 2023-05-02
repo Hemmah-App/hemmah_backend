@@ -39,11 +39,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeRequests()
-                .requestMatchers("/v1/auth/signin", "/v1/auth/signup").permitAll()
+                .requestMatchers("/v1/auth/signin", "/v1/auth/signup", "/v3/api-docs").permitAll()
                 // Allow access to anyone temporarily - don't forget to remove this from AdminController as well
                 .requestMatchers("/v1/admin/user").permitAll()
                 .requestMatchers("/ws").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll() // TODO: Change this to authenticated() when done testing
                 .and()
                 .oauth2ResourceServer()
                 .jwt()

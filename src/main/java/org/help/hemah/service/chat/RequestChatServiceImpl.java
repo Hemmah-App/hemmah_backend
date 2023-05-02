@@ -94,19 +94,24 @@ public class RequestChatServiceImpl implements RequestChatService {
 
         if (user.getType() == UserType.VOLUNTEER) {
             Disabled disabled = chatRoom.getDisabled();
+
             log.info("Sending message to user: " + disabled.getUserData().getUsername());
             log.info("Message: " + message.getContent());
             log.info("dest: " + "/messages/receive/" + chatRoomId);
+
             messagingTemplate.convertAndSendToUser(disabled.getUserData().getUsername(), "/messages/receive/" + chatRoomId,
                     Map.of("content", message.getContent(),
-                            "sender", message.getSender(),
+                            "sender", message.getSender().getUserData().getUsername(),
                             "createdAt", message.getCreatedAt()));
         } else if (user.getType() == UserType.DISABLED) {
+
             Volunteer volunteer = chatRoom.getVolunteer();
+
             log.info("Sending message to user: " + volunteer.getUserData().getUsername());
+
             messagingTemplate.convertAndSendToUser(volunteer.getUserData().getUsername(), "/messages/receive/" + chatRoomId,
                     Map.of("content", message.getContent(),
-                            "sender", message.getSender(),
+                            "sender", message.getSender().getUserData().getUsername(),
                             "createdAt", message.getCreatedAt()));
         }
 

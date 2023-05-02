@@ -164,5 +164,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Override
+    public void changeStatus(UserStatus status) {
+        User user = authenticationFacade.getAuthenticatedUser();
 
+        user.setStatus(status);
+        userRepository.save(user);
+    }
 }

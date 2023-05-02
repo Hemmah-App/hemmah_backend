@@ -3,6 +3,7 @@ package org.help.hemah.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.help.hemah.domain.user.UserStatus;
 import org.help.hemah.helper.req_model.ChangeLanguageModel;
 import org.help.hemah.helper.req_model.ChangePasswordModel;
 import org.help.hemah.helper.res_model.ResponseModel;
@@ -70,6 +71,20 @@ public class UserDataController {
                         .message("Profile picture updated successfully")
                         .build()
                 );
+    }
+
+    @PutMapping(value = "/status/{status}")
+    public ResponseEntity<ResponseModel> changeUserStatus(@PathVariable @Valid UserStatus status) {
+
+        userService.changeStatus(status);
+
+        return ResponseEntity.ok(
+                ResponseModel.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .status(HttpStatus.OK)
+                        .message("User status changed successfully")
+                        .build()
+        );
     }
 
 }

@@ -1,5 +1,7 @@
 package org.help.hemah.controller;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,12 @@ public class AuthController {
     private final TokenService tokenService;
     private final AuthenticationFacade authenticationFacade;
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User signed in successfully"),
+            @ApiResponse(responseCode = "400", description = "Error signing user with creeds")
+    })
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody SigninModel form) {
+    public ResponseEntity<?> signin(@RequestBody @Valid SigninModel form) {
 
         ResponseModel.ResponseModelBuilder<?, ?> response = ResponseModel.builder()
                 .timeStamp(LocalDateTime.now().toString());
