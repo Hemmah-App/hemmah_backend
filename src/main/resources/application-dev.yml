@@ -4,13 +4,17 @@ spring:
     username: hemah_app
     password: test55@good
 
+  rabbitmq:
+    host: 144.24.219.44
+    port: 5672
+
+
   jpa:
     show-sql: true
-
-
 
 
 logging:
   level:
 #    root: debug
     org.help.hemah: debug
+

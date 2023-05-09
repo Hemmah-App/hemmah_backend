@@ -4,11 +4,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.help.hemah.domain.user.UserType;
 import org.springframework.validation.annotation.Validated;
 
 @Data
 @Validated
+@SuperBuilder
 public class NewUserModel {
 
     @Pattern(regexp = "[A-Za-z][A-Za-z0-9_]{7,29}$", message = "Username is Invalid.")
