@@ -36,7 +36,7 @@ rsa:
   public-key: classpath:certs/public.pem
 
 firebase:
-  service-account-file: classpath:certs/hemmah_firebase_creds.json
+  service-account-file: classpath:/static/hemmah_firebase_creds.json
 
 
 server:

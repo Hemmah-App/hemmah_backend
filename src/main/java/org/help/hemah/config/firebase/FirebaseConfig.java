@@ -5,13 +5,12 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 
 @Configuration
 @Slf4j
@@ -19,6 +18,15 @@ import java.io.FileInputStream;
 public class FirebaseConfig {
 
     private final ResourceLoader resourceLoader;
+
+
+    @Bean
+    CommandLineRunner runner(FirebaseApp firebaseApp) {
+        return args -> {
+            log.info(firebaseApp.getOptions().getProjectId());
+        };
+    }
+
 
     @Bean
     FirebaseApp firebaseApp(GoogleCredentials credentials) {
@@ -31,10 +39,8 @@ public class FirebaseConfig {
 
     @Bean
     GoogleCredentials googleCredentials(FirebaseProperties firebaseProperties) throws Exception {
-        File file = resourceLoader.getResource(firebaseProperties.serviceAccountFile()).getFile();
+        InputStream file = resourceLoader.getResource(firebaseProperties.serviceAccountFile()).getInputStream();
 
-        log.info(FileUtils.readFileToString(file));
-
-        return GoogleCredentials.fromStream(new FileInputStream(file));
+        return GoogleCredentials.fromStream(file);
     }
 }
