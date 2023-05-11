@@ -1,5 +1,6 @@
 package org.help.hemah.controller;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.help.hemah.helper.req_model.NewNotificationModel;
@@ -20,7 +21,7 @@ public class NotificationController {
 
     @PostMapping
 //    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ResponseModel> sendNotification(@RequestBody @Valid NewNotificationModel model) {
+    public ResponseEntity<ResponseModel> sendNotification(@RequestBody @Valid NewNotificationModel model) throws FirebaseMessagingException {
         notificationService.sendNotificationToAll(model);
         return ResponseEntity.ok(
                 ResponseModel.builder()
