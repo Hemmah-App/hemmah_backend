@@ -20,6 +20,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final SimpMessagingTemplate sMTemplate;
     private final NotificationRepository notificationRepository;
 
+
     @Override
     public void sendNotificationToAll(NewNotificationModel model) throws FirebaseMessagingException {
         Notification notification = new Notification(model.getTitle(), model.getBody(), model.getType());
@@ -28,11 +29,14 @@ public class NotificationServiceImpl implements NotificationService {
 
 
         Message notificationM = Message.builder()
-                .putData("title", model.getTitle())
-                .putData("body", model.getBody())
-                .putData("type", model.getType().toString())
-                .setTopic("notification")
+                .setNotification(
+                        com.google.firebase.messaging.Notification.builder()
+                                .setBody(model.getBody())
+                                .setTitle(model.getTitle())
+                                .build())
+                .setTopic("notificationAll")
                 .build();
+
 
         fcm.send(notificationM);
     }

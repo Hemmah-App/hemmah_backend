@@ -37,6 +37,7 @@ rsa:
 
 firebase:
   service-account-file: classpath:/static/hemmah_firebase_creds.json
+  database-url: https://hemah-64186-default-rtdb.firebaseio.com
 
 
 server:
